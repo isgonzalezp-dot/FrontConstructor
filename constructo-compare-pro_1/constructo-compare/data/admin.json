@@ -1,0 +1,51 @@
+{
+  "usuarios": [
+    { "id": "U001", "nombre": "Carlos Mendoza", "email": "carlos.m@constructora.cl", "rol": "admin", "estado": "activo", "fechaRegistro": "2024-01-15", "cotizaciones": 12, "avatar": "CM" },
+    { "id": "U002", "nombre": "Ana Torres", "email": "ana.torres@obras.cl", "rol": "usuario", "estado": "activo", "fechaRegistro": "2024-02-20", "cotizaciones": 8, "avatar": "AT" },
+    { "id": "U003", "nombre": "Roberto Silva", "email": "rsilva@constructora.cl", "rol": "usuario", "estado": "activo", "fechaRegistro": "2024-03-05", "cotizaciones": 23, "avatar": "RS" },
+    { "id": "U004", "nombre": "Marcela Fuentes", "email": "mfuentes@gmail.com", "rol": "usuario", "estado": "inactivo", "fechaRegistro": "2024-03-18", "cotizaciones": 3, "avatar": "MF" },
+    { "id": "U005", "nombre": "Diego Herrera", "email": "d.herrera@empresa.cl", "rol": "usuario", "estado": "activo", "fechaRegistro": "2024-04-01", "cotizaciones": 15, "avatar": "DH" },
+    { "id": "U006", "nombre": "Valentina Rojas", "email": "vrojas@constructora.cl", "rol": "editor", "estado": "activo", "fechaRegistro": "2024-04-10", "cotizaciones": 7, "avatar": "VR" }
+  ],
+  "cotizaciones": [
+    { "id": "COT-001", "usuario": "Carlos Mendoza", "fecha": "2024-06-10", "items": 8, "total": 1245890, "estado": "aprobada", "tiendas": ["Sodimac", "Easy"] },
+    { "id": "COT-002", "usuario": "Ana Torres", "fecha": "2024-06-09", "items": 4, "total": 387500, "estado": "pendiente", "tiendas": ["Imperial"] },
+    { "id": "COT-003", "usuario": "Roberto Silva", "fecha": "2024-06-09", "items": 12, "total": 2890450, "estado": "aprobada", "tiendas": ["Sodimac", "Easy", "Imperial"] },
+    { "id": "COT-004", "usuario": "Diego Herrera", "fecha": "2024-06-08", "items": 3, "total": 156000, "estado": "rechazada", "tiendas": ["Easy"] },
+    { "id": "COT-005", "usuario": "Valentina Rojas", "fecha": "2024-06-07", "items": 6, "total": 945200, "estado": "aprobada", "tiendas": ["Sodimac"] },
+    { "id": "COT-006", "usuario": "Marcela Fuentes", "fecha": "2024-06-06", "items": 2, "total": 78900, "estado": "pendiente", "tiendas": ["Imperial"] },
+    { "id": "COT-007", "usuario": "Roberto Silva", "fecha": "2024-06-05", "items": 9, "total": 1567300, "estado": "aprobada", "tiendas": ["Sodimac", "Easy"] },
+    { "id": "COT-008", "usuario": "Carlos Mendoza", "fecha": "2024-06-04", "items": 5, "total": 612400, "estado": "aprobada", "tiendas": ["Easy"] }
+  ],
+  "metricas": {
+    "totalCotizaciones": 147,
+    "cotizacionesMes": 24,
+    "usuariosActivos": 5,
+    "totalProductos": 12,
+    "valorTotalCotizado": 18945200,
+    "ahorroPromedio": 8.4,
+    "tiendaMasUsada": "Sodimac",
+    "categoriaMasConsultada": "Cementos y Morteros",
+    "tendenciaMensual": [
+      { "mes": "Ene", "cotizaciones": 8, "valor": 980000 },
+      { "mes": "Feb", "cotizaciones": 12, "valor": 1450000 },
+      { "mes": "Mar", "cotizaciones": 15, "valor": 1890000 },
+      { "mes": "Abr", "cotizaciones": 19, "valor": 2340000 },
+      { "mes": "May", "cotizaciones": 22, "valor": 3120000 },
+      { "mes": "Jun", "cotizaciones": 24, "valor": 3560000 }
+    ],
+    "distribucionTiendas": [
+      { "tienda": "Sodimac", "porcentaje": 42, "color": "#e53935" },
+      { "tienda": "Easy", "porcentaje": 35, "color": "#43a047" },
+      { "tienda": "Imperial", "porcentaje": 23, "color": "#1565c0" }
+    ]
+  },
+  "logs": [
+    { "id": 1, "tipo": "info", "accion": "Usuario Carlos Mendoza inició sesión", "fecha": "2024-06-10 14:32", "usuario": "carlos.m@constructora.cl" },
+    { "id": 2, "tipo": "success", "accion": "Cotización COT-001 exportada a PDF", "fecha": "2024-06-10 14:35", "usuario": "carlos.m@constructora.cl" },
+    { "id": 3, "tipo": "warning", "accion": "Producto P004 sin stock en Imperial", "fecha": "2024-06-10 13:20", "usuario": "sistema" },
+    { "id": 4, "tipo": "info", "accion": "Nuevo usuario registrado: Diego Herrera", "fecha": "2024-06-10 12:15", "usuario": "admin" },
+    { "id": 5, "tipo": "success", "accion": "Precio actualizado: Cemento Melón 25kg", "fecha": "2024-06-10 11:00", "usuario": "admin" },
+    { "id": 6, "tipo": "error", "accion": "Error al sincronizar precios con Easy API", "fecha": "2024-06-10 10:45", "usuario": "sistema" }
+  ]
+}

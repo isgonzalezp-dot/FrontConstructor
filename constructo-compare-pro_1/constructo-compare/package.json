@@ -1,0 +1,17 @@
+{
+  "name": "constructo-compare-pro",
+  "version": "1.0.0",
+  "description": "Comparador de precios de materiales de construcción en Chile",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "serve": "npx serve . -p 3000",
+    "deploy": "npm run build && vercel --prod"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "serve": "^14.2.3"
+  },
+  "keywords": ["construccion", "comparador-precios", "chile", "materiales"],
+  "license": "MIT"
+}

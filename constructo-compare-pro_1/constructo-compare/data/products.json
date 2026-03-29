@@ -1,0 +1,158 @@
+[
+  {
+    "id": "P001",
+    "nombre": "Cemento Melón Corriente 25kg",
+    "categoria": "Cementos y Morteros",
+    "imagen": "https://placehold.co/300x300/e8f0fe/1E3A5F?text=Cemento",
+    "unidad": "saco",
+    "especificaciones": { "peso": "25kg", "tipo": "Corriente", "marca": "Melón" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 6990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 6490, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 6750, "stock": false, "url": "#" }
+    ]
+  },
+  {
+    "id": "P002",
+    "nombre": "Cerámico Piso 45x45 Gris Mármol",
+    "categoria": "Revestimientos",
+    "imagen": "https://placehold.co/300x300/f5f5f5/1E3A5F?text=Cerámico",
+    "unidad": "m²",
+    "especificaciones": { "formato": "45x45cm", "tipo": "Esmaltado", "marca": "Porcelain" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 8990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 9490, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 8490, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P003",
+    "nombre": "Fierro Corrugado 12mm x 12m",
+    "categoria": "Estructura y Acero",
+    "imagen": "https://placehold.co/300x300/e0e0e0/1E3A5F?text=Fierro",
+    "unidad": "barra",
+    "especificaciones": { "diametro": "12mm", "largo": "12m", "marca": "CAP Acero" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 12990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 13490, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 12500, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P004",
+    "nombre": "Pintura Látex Interior 1 Galón Blanco",
+    "categoria": "Pinturas",
+    "imagen": "https://placehold.co/300x300/fff9c4/1E3A5F?text=Pintura",
+    "unidad": "galón",
+    "especificaciones": { "rendimiento": "12m²/mano", "tipo": "Látex", "marca": "Sherwin Williams" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 19990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 18490, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 19200, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P005",
+    "nombre": "Ladrillo Fiscal 24x11x5.5cm",
+    "categoria": "Albañilería",
+    "imagen": "https://placehold.co/300x300/fbe9e7/1E3A5F?text=Ladrillo",
+    "unidad": "unidad",
+    "especificaciones": { "formato": "24x11x5.5cm", "tipo": "Fiscal", "marca": "Polpaico" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 390, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 370, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 350, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P006",
+    "nombre": "Placa OSB 15mm 1.22x2.44m",
+    "categoria": "Maderas y Tableros",
+    "imagen": "https://placehold.co/300x300/fff3e0/1E3A5F?text=OSB",
+    "unidad": "placa",
+    "especificaciones": { "espesor": "15mm", "formato": "1.22x2.44m", "marca": "Arauco" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 24990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 23900, "stock": false, "url": "#" },
+      { "tienda": "Imperial", "precio": 24500, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P007",
+    "nombre": "Tubo PVC 4\" 6m Alcantarillado",
+    "categoria": "Gasfitería",
+    "imagen": "https://placehold.co/300x300/e3f2fd/1E3A5F?text=PVC",
+    "unidad": "tubo",
+    "especificaciones": { "diametro": "4 pulgadas", "largo": "6m", "marca": "Tigre" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 14990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 15490, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 14200, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P008",
+    "nombre": "Clavo 3\" con cabeza 1kg",
+    "categoria": "Ferretería",
+    "imagen": "https://placehold.co/300x300/eceff1/1E3A5F?text=Clavo",
+    "unidad": "kg",
+    "especificaciones": { "largo": "3 pulgadas", "tipo": "Con cabeza", "marca": "Genérico" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 1990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 1890, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 1750, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P009",
+    "nombre": "Membrana Impermeabilizante 20kg",
+    "categoria": "Impermeabilización",
+    "imagen": "https://placehold.co/300x300/e8f5e9/1E3A5F?text=Membrana",
+    "unidad": "balde",
+    "especificaciones": { "peso": "20kg", "tipo": "Acrílica", "marca": "Sika" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 32990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 31500, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 33490, "stock": false, "url": "#" }
+    ]
+  },
+  {
+    "id": "P010",
+    "nombre": "Aislante Lana Vidrio 80mm Rollo",
+    "categoria": "Aislación",
+    "imagen": "https://placehold.co/300x300/fffde7/1E3A5F?text=Aislante",
+    "unidad": "rollo",
+    "especificaciones": { "espesor": "80mm", "ancho": "1.2m", "marca": "Isover" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 18990, "stock": false, "url": "#" },
+      { "tienda": "Easy", "precio": 17900, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 18500, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P011",
+    "nombre": "Perfil Acero 100x50mm 6m",
+    "categoria": "Estructura y Acero",
+    "imagen": "https://placehold.co/300x300/e0e0e0/1E3A5F?text=Perfil",
+    "unidad": "barra",
+    "especificaciones": { "formato": "100x50mm", "largo": "6m", "marca": "Tupemesa" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 22990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 21900, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 22500, "stock": true, "url": "#" }
+    ]
+  },
+  {
+    "id": "P012",
+    "nombre": "Porcelanato Blanco 60x60cm",
+    "categoria": "Revestimientos",
+    "imagen": "https://placehold.co/300x300/fafafa/1E3A5F?text=Porcelanato",
+    "unidad": "m²",
+    "especificaciones": { "formato": "60x60cm", "tipo": "Pulido", "marca": "San Lorenzo" },
+    "tiendas": [
+      { "tienda": "Sodimac", "precio": 14990, "stock": true, "url": "#" },
+      { "tienda": "Easy", "precio": 13990, "stock": true, "url": "#" },
+      { "tienda": "Imperial", "precio": 14500, "stock": true, "url": "#" }
+    ]
+  }
+]

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iniciar sesion — ConstructoCompare PRO</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231E3A5F'/></svg>"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"/>
+  <style>
+/* ============================================================
+   ConstructoCompare PRO — login.html
+   Pagina de autenticacion unificada para clientes y administradores.
+   El selector de rol determina el flujo de validacion y redireccion.
+   ============================================================ */
+:root {
+  --blue-dark:#1E3A5F; --blue-mid:#2B5080; --blue-light:#3B72B0; --blue-pale:#EBF3FF;
+  --orange:#F57C00; --orange-light:#FF9A30; --orange-pale:#FFF3E0;
+  --gray-50:#F8F9FB; --gray-100:#F0F2F5; --gray-200:#E2E6ED;
+  --gray-400:#9BA8BA; --gray-600:#5A6A7E; --gray-900:#1A2332;
+  --red:#e53935; --green:#2e7d32;
+  --font:'Sora',sans-serif; --mono:'JetBrains Mono',monospace;
+  --radius-md:12px; --radius-lg:18px; --transition:0.2s cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--gray-50);min-height:100vh;display:flex;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;background:none;font-family:inherit;}
+
+/* Layout principal de dos columnas */
+.auth-layout{display:flex;width:100%;min-height:100vh;}
+
+/* Panel izquierdo: fondo oscuro con informacion y beneficios */
+.auth-left{
+  flex:1;
+  background:linear-gradient(145deg,var(--blue-dark) 0%,var(--blue-mid) 60%,#1a3a6e 100%);
+  display:flex;flex-direction:column;justify-content:center;padding:60px;
+  position:relative;overflow:hidden;
+}
+.auth-left::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:rgba(245,124,0,.08);pointer-events:none;}
+.auth-left::after{content:'';position:absolute;bottom:-100px;left:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;}
+
+/* Logo dentro del panel izquierdo */
+.auth-left-logo{display:flex;align-items:center;gap:12px;margin-bottom:56px;position:relative;}
+.auth-left-logo img{height:48px;}
+.auth-left-logo-text{font-size:1rem;font-weight:800;color:#fff;line-height:1.2;}
+.auth-left-logo-text span{color:var(--orange);font-size:.65rem;display:block;letter-spacing:.12em;text-transform:uppercase;}
+
+/* Contenido informativo y titulo del panel izquierdo */
+.auth-left-content{position:relative;}
+.auth-left h2{font-size:2rem;font-weight:800;color:#fff;line-height:1.25;margin-bottom:14px;}
+.auth-left h2 em{font-style:normal;color:var(--orange-light);}
+.auth-left-desc{font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:36px;max-width:340px;}
+
+/* Cada fila de beneficio en el panel izquierdo */
+.auth-benefit{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;}
+.auth-benefit-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,124,0,.15);display:flex;align-items:center;justify-content:center;color:var(--orange-light);flex-shrink:0;}
+.auth-benefit-text strong{display:block;font-size:.875rem;font-weight:700;color:#fff;margin-bottom:3px;}
+.auth-benefit-text span{font-size:.78rem;color:rgba(255,255,255,.5);}
+
+/* Panel derecho: formulario de autenticacion sobre fondo blanco */
+.auth-right{width:500px;flex-shrink:0;background:#fff;display:flex;flex-direction:column;justify-content:center;padding:44px;overflow-y:auto;}
+.auth-right-header{margin-bottom:24px;}
+.auth-right-header h1{font-size:1.4rem;font-weight:800;color:var(--blue-dark);margin-bottom:6px;}
+.auth-right-header p{font-size:.875rem;color:var(--gray-600);}
+
+/* Selector de tipo de acceso: dos botones en grilla de 2 columnas */
+.role-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.role-btn{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:16px 12px;border:2px solid var(--gray-200);border-radius:var(--radius-md);
+  background:var(--gray-50);color:var(--gray-600);
+  font-size:.82rem;font-weight:600;text-align:center;
+  transition:var(--transition);cursor:pointer;
+}
+.role-btn:hover{border-color:var(--blue-light);background:var(--blue-pale);color:var(--blue-dark);}
+
+/* Estado activo del boton Cliente */
+.role-btn.active.client{border-color:var(--blue-dark);background:var(--blue-pale);color:var(--blue-dark);}
+/* Estado activo del boton Administrador */
+.role-btn.active.admin{border-color:var(--orange);background:var(--orange-pale);color:var(--orange);}
+.role-btn.active.client svg{stroke:var(--blue-dark);}
+.role-btn.active.admin  svg{stroke:var(--orange);}
+
+/* Texto indicador del rol actualmente seleccionado */
+.role-label{font-size:.7rem;font-weight:700;text-align:center;margin-bottom:18px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;}
+
+/* Cuadro de credenciales de demostracion (color cambia segun rol) */
+.demo-box{border-radius:10px;padding:12px 16px;margin-bottom:16px;border:1px solid;}
+.demo-box.client{background:var(--blue-pale);border-color:rgba(59,114,176,.2);}
+.demo-box.admin {background:var(--orange-pale);border-color:rgba(245,124,0,.25);}
+.demo-box p{font-size:.7rem;font-weight:700;margin-bottom:5px;}
+.demo-box.client p{color:var(--blue-mid);}
+.demo-box.admin  p{color:var(--orange);}
+.demo-box code{font-family:var(--mono);font-size:.78rem;color:var(--gray-600);display:block;line-height:1.9;}
+
+/* Alerta de error o confirmacion del formulario */
+.auth-alert{display:none;align-items:flex-start;gap:10px;background:#ffebee;border:1px solid #ffcdd2;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:.825rem;color:#c62828;font-weight:500;}
+.auth-alert.visible{display:flex;}
+.auth-alert.success{background:#e8f5e9;border-color:#c8e6c9;color:var(--green);}
+
+/* Contenedor de cada campo del formulario */
+.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.form-field label{font-size:.72rem;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.06em;}
+
+/* Campo de entrada con icono interior */
+.input-wrap{position:relative;}
+.input-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none;}
+.input-wrap input{
+  width:100%;height:48px;padding:0 16px 0 44px;
+  border:1.5px solid var(--gray-200);border-radius:var(--radius-md);
+  font-family:var(--font);font-size:.9rem;color:var(--gray-900);
+  background:var(--gray-50);outline:none;transition:var(--transition);
+}
+.input-wrap input:focus{border-color:var(--blue-light);background:#fff;box-shadow:0 0 0 3px rgba(59,114,176,.1);}
+.input-wrap input.error{border-color:var(--red);}
+
+/* Mensaje de error a nivel de campo individual */
+.field-error{font-size:.72rem;color:var(--red);font-weight:500;min-height:16px;}
+
+/* Fila de opciones adicionales del formulario */
+.form-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.form-remember{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--gray-600);cursor:pointer;}
+.form-remember input{width:15px;height:15px;accent-color:var(--blue-dark);}
+.form-forgot{font-size:.8rem;color:var(--blue-light);font-weight:600;cursor:pointer;}
+.form-forgot:hover{color:var(--orange);}
+
+/* Boton principal de envio del formulario */
+.btn-submit{
+  width:100%;height:50px;background:var(--blue-dark);color:#fff;
+  border-radius:var(--radius-md);font-family:var(--font);font-size:.95rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:var(--transition);letter-spacing:.02em;
+}
+.btn-submit:hover:not(:disabled){background:var(--blue-mid);box-shadow:0 6px 20px rgba(30,58,95,.25);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;}
+
+/* Variante naranja para el modo Administrador */
+.btn-submit.admin-mode{background:var(--orange);}
+.btn-submit.admin-mode:hover:not(:disabled){background:var(--orange-light);box-shadow:0 6px 20px rgba(245,124,0,.3);}
+
+/* Animacion de carga mientras se procesa la solicitud */
+.btn-spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none;}
+.btn-submit.loading .btn-spinner{display:block;}
+.btn-submit.loading .btn-text{display:none;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Barra de progreso durante el bloqueo por intentos fallidos */
+.countdown-bar{width:100%;height:3px;background:var(--gray-200);border-radius:2px;margin-top:8px;overflow:hidden;display:none;}
+.countdown-fill{height:100%;background:var(--red);transition:width 1s linear;}
+
+/* Pie del panel del formulario */
+.auth-footer{margin-top:20px;text-align:center;font-size:.825rem;color:var(--gray-600);}
+.auth-footer a{color:var(--orange);font-weight:700;}
+.auth-footer a:hover{color:var(--orange-light);}
+
+/* Divisor visual entre secciones del formulario */
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--gray-400);font-size:.75rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gray-200);}
+
+/* En pantallas pequenas se oculta el panel izquierdo */
+@media(max-width:900px){.auth-left{display:none;}.auth-right{width:100%;padding:36px 24px;}}
+  </style>
+</head>
+<body>
+<div class="auth-layout">
+
+  <!-- Panel izquierdo: descripcion de la plataforma y beneficios -->
+  <div class="auth-left">
+    <div class="auth-left-logo">
+      <img src="assets/logo.png" alt="ConstructoCompare PRO"/>
+      <div class="auth-left-logo-text">ConstructoCompare <span>PRO</span></div>
+    </div>
+    <div class="auth-left-content">
+      <h2>Acceso a la<br/><em>plataforma</em></h2>
+      <p class="auth-left-desc">
+        Inicie sesion como cliente para comparar precios y generar cotizaciones,
+        o como administrador para gestionar el sistema completo.
+      </p>
+      <div class="auth-benefit">
+        <div class="auth-benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="auth-benefit-text"><strong>Comparacion en tiempo real</strong><span>Precios de Sodimac, Easy e Imperial</span></div>
+      </div>
+      <div class="auth-benefit">
+        <div class="auth-benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="auth-benefit-text"><strong>Cotizaciones guardadas</strong><span>Historial completo por proyecto</span></div>
+      </div>
+      <div class="auth-benefit">
+        <div class="auth-benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="auth-benefit-text"><strong>Conversion a UF</strong><span>Valor actualizado diariamente</span></div>
+      </div>
+      <div class="auth-benefit">
+        <div class="auth-benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="auth-benefit-text"><strong>Panel de administracion</strong><span>Gestion completa del sistema</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel derecho: formulario unificado de autenticacion -->
+  <div class="auth-right">
+
+    <a href="landing.html" style="display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--gray-400);margin-bottom:28px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Volver al inicio
+    </a>
+
+    <div class="auth-right-header">
+      <h1>Iniciar sesion</h1>
+      <p>Seleccione el tipo de acceso e ingrese sus credenciales</p>
+    </div>
+
+    <!-- Selector de rol: define el flujo de autenticacion -->
+    <div class="role-selector">
+      <button class="role-btn client active" id="role-client" type="button">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Acceso Cliente
+      </button>
+      <button class="role-btn admin" id="role-admin" type="button">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Acceso Administrador
+      </button>
+    </div>
+
+    <!-- Indicador textual del tipo de acceso activo -->
+    <p class="role-label" id="role-label">Ingresando como: Cliente</p>
+
+    <!-- Cuadro de credenciales de demostracion (actualizado dinamicamente) -->
+    <div class="demo-box client" id="demo-box">
+      <p id="demo-title">Credenciales de demostracion — Cliente</p>
+      <code id="demo-content">Email: usuario@demo.cl<br/>Contrasena: demo123</code>
+    </div>
+
+    <!-- Alerta de errores o confirmacion de acceso -->
+    <div class="auth-alert" id="auth-alert">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="alert-msg"></span>
+    </div>
+
+    <!-- Campo correo electronico -->
+    <div class="form-field">
+      <label for="login-email">Correo electronico</label>
+      <div class="input-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <input type="email" id="login-email" placeholder="correo@ejemplo.cl" autocomplete="email"/>
+      </div>
+      <span class="field-error" id="email-err"></span>
+    </div>
+
+    <!-- Campo contrasena -->
+    <div class="form-field">
+      <label for="login-pass">Contrasena</label>
+      <div class="input-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="login-pass" placeholder="Ingrese su contrasena" autocomplete="current-password"/>
+      </div>
+      <span class="field-error" id="pass-err"></span>
+    </div>
+
+    <!-- Opciones adicionales del formulario -->
+    <div class="form-row">
+      <label class="form-remember">
+        <input type="checkbox" id="remember-me"/> Recordarme
+      </label>
+      <span class="form-forgot" id="btn-forgot">Olvide mi contrasena</span>
+    </div>
+
+    <!-- Boton de envio: cambia color y texto segun el rol activo -->
+    <button class="btn-submit" id="btn-login" type="button">
+      <div class="btn-spinner"></div>
+      <span class="btn-text" id="btn-text">Ingresar como Cliente</span>
+    </button>
+
+    <!-- Barra de bloqueo temporal por intentos fallidos excesivos -->
+    <div class="countdown-bar" id="countdown-bar">
+      <div class="countdown-fill" id="countdown-fill" style="width:100%"></div>
+    </div>
+
+    <div class="divider">o</div>
+
+    <div class="auth-footer">
+      No tiene una cuenta registrada? <a href="register.html">Registrese de forma gratuita</a>
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script>
+/*
+ * ============================================================
+ * ConstructoCompare PRO — Logica de autenticacion unificada
+ *
+ * Este modulo gestiona el formulario de inicio de sesion para
+ * dos roles: Cliente y Administrador. El rol seleccionado
+ * determina las credenciales a validar y la pagina de destino.
+ *
+ * Integracion futura con backend FastAPI:
+ *   POST /api/v1/auth/login  { email, password, role }
+ *   Respuesta: { access_token, token_type, user }
+ *   El token JWT debe almacenarse en sessionStorage.
+ * ============================================================
+ */
+
+/* Redireccion automatica si ya existe una sesion activa */
+if (Auth.isLoggedIn())      window.location.href = 'index.html';
+if (Auth.getAdminSession()) window.location.href = 'admin-panel.html';
+
+/* Referencias a los elementos principales del formulario */
+const emailEl       = document.getElementById('login-email');
+const passEl        = document.getElementById('login-pass');
+const btnLogin      = document.getElementById('btn-login');
+const btnText       = document.getElementById('btn-text');
+const alertEl       = document.getElementById('auth-alert');
+const alertMsg      = document.getElementById('alert-msg');
+const roleBtnClient = document.getElementById('role-client');
+const roleBtnAdmin  = document.getElementById('role-admin');
+const roleLabel     = document.getElementById('role-label');
+const demoBox       = document.getElementById('demo-box');
+const demoTitle     = document.getElementById('demo-title');
+const demoContent   = document.getElementById('demo-content');
+
+/* Variables de estado del formulario */
+let currentRole = 'client'; // Rol activo: 'client' o 'admin'
+let attempts    = 0;        // Intentos de acceso fallidos consecutivos
+let blocked     = false;    // Estado de bloqueo temporal del formulario
+
+/*
+ * Credenciales de administrador para la validacion simulada.
+ * Reemplazar por llamada autenticada al backend cuando este disponible.
+ * Endpoint futuro: POST /api/v1/auth/login con verificacion JWT.
+ */
+const ADMIN_CREDENTIALS = [
+  { email: 'admin@constructo.cl', password: 'admin123', nombre: 'Carlos Mendoza', rol: 'admin' }
+];
+
+/*
+ * switchRole(role)
+ * Cambia el modo de autenticacion entre Cliente y Administrador.
+ * Actualiza los estilos visuales del selector, el texto indicador,
+ * el cuadro de credenciales de demo, el color del boton y su texto.
+ *
+ * @param {string} role - Identificador del rol: 'client' o 'admin'
+ */
+function switchRole(role) {
+  currentRole = role;
+  roleBtnClient.classList.remove('active', 'client', 'admin');
+  roleBtnAdmin.classList.remove('active', 'client', 'admin');
+  alertEl.classList.remove('visible');
+
+  if (role === 'client') {
+    roleBtnClient.classList.add('active', 'client');
+    roleLabel.textContent    = 'Ingresando como: Cliente';
+    btnText.textContent      = 'Ingresar como Cliente';
+    btnLogin.classList.remove('admin-mode');
+    demoBox.className        = 'demo-box client';
+    demoTitle.textContent    = 'Credenciales de demostracion — Cliente';
+    demoContent.innerHTML    = 'Email: usuario@demo.cl<br/>Contrasena: demo123';
+  } else {
+    roleBtnAdmin.classList.add('active', 'admin');
+    roleLabel.textContent    = 'Ingresando como: Administrador';
+    btnText.textContent      = 'Ingresar como Administrador';
+    btnLogin.classList.add('admin-mode');
+    demoBox.className        = 'demo-box admin';
+    demoTitle.textContent    = 'Credenciales de demostracion — Administrador';
+    demoContent.innerHTML    = 'Email: admin@constructo.cl<br/>Contrasena: admin123';
+  }
+}
+
+/*
+ * showAlert(msg, type)
+ * Muestra un mensaje de retroalimentacion en el formulario.
+ * La variante 'success' presenta fondo verde; el tipo por defecto es error (rojo).
+ *
+ * @param {string} msg  - Texto del mensaje a mostrar
+ * @param {string} type - Tipo visual: 'error' (defecto) | 'success'
+ */
+function showAlert(msg, type = 'error') {
+  alertEl.className    = 'auth-alert visible' + (type === 'success' ? ' success' : '');
+  alertMsg.textContent = msg;
+}
+
+/*
+ * clearErrors()
+ * Elimina todos los mensajes de error del formulario:
+ * errores de campo (email, contrasena) y la alerta general.
+ */
+function clearErrors() {
+  document.getElementById('email-err').textContent = '';
+  document.getElementById('pass-err').textContent  = '';
+  alertEl.classList.remove('visible');
+}
+
+/*
+ * startLockout()
+ * Activa el bloqueo temporal del formulario por 30 segundos.
+ * Se invoca automaticamente al superar 3 intentos fallidos.
+ * Una barra de progreso visual indica el tiempo restante.
+ * Al expirar, restaura el formulario al estado inicial.
+ */
+function startLockout() {
+  blocked = true;
+  btnLogin.disabled = true;
+  let secs = 30;
+  const bar  = document.getElementById('countdown-bar');
+  const fill = document.getElementById('countdown-fill');
+  bar.style.display = 'block';
+  showAlert('Se ha superado el limite de intentos. Espere ' + secs + ' segundos.');
+  const interval = setInterval(() => {
+    secs--;
+    fill.style.width = (secs / 30 * 100) + '%';
+    if (secs <= 0) {
+      clearInterval(interval);
+      blocked = false; attempts = 0;
+      btnLogin.disabled = false;
+      bar.style.display = 'none';
+      fill.style.width  = '100%';
+      clearErrors();
+    }
+  }, 1000);
+}
+
+/*
+ * handleLogin()
+ * Funcion principal del proceso de autenticacion.
+ *
+ * Flujo de ejecucion:
+ *   1. Verifica que el formulario no este bloqueado.
+ *   2. Valida que los campos obligatorios esten completos.
+ *   3. Activa el estado de carga en el boton.
+ *   4. Segun el rol activo, ejecuta la validacion correspondiente:
+ *        - Cliente:       llama a Auth.login() (valida localStorage y demo users).
+ *        - Administrador: valida contra ADMIN_CREDENTIALS y crea sesion en sessionStorage.
+ *   5. En caso de exito: redirige a la pagina correspondiente.
+ *   6. En caso de error: muestra el mensaje especifico e incrementa el contador.
+ *      Si se alcanzan 3 errores consecutivos, activa el bloqueo temporal.
+ *
+ * Integracion futura con FastAPI:
+ *   Reemplazar la logica de validacion por:
+ *   const res = await fetch('/api/v1/auth/login', { method:'POST', body: JSON.stringify({email, password, role}) });
+ *   const data = await res.json();
+ *   if (data.access_token) { sessionStorage.setItem('token', data.access_token); ... }
+ */
+async function handleLogin() {
+  if (blocked) return;
+  clearErrors();
+
+  const email = emailEl.value.trim();
+  const pass  = passEl.value;
+  let valid   = true;
+
+  if (!email) {
+    document.getElementById('email-err').textContent = 'Ingrese su correo electronico';
+    emailEl.classList.add('error');
+    valid = false;
+  }
+  if (!pass) {
+    document.getElementById('pass-err').textContent = 'Ingrese su contrasena';
+    passEl.classList.add('error');
+    valid = false;
+  }
+  if (!valid) return;
+
+  btnLogin.classList.add('loading');
+  btnLogin.disabled = true;
+
+  /* Simulacion de latencia de red — eliminar al integrar backend real */
+  await new Promise(r => setTimeout(r, 850));
+
+  if (currentRole === 'client') {
+    /* Autenticacion de cliente: valida contra usuarios registrados y demo */
+    const result = Auth.login(email, pass);
+
+    if (result.success) {
+      if (document.getElementById('remember-me').checked) {
+        localStorage.setItem('cc_remember_email', email);
+      }
+      showAlert('Acceso concedido. Redirigiendo al catalogo...', 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 900);
+    } else {
+      btnLogin.classList.remove('loading');
+      btnLogin.disabled = false;
+      attempts++;
+      if (result.error === 'email_not_found') {
+        showAlert('No existe una cuenta registrada con ese correo electronico.');
+        emailEl.classList.add('error');
+      } else {
+        showAlert('La contrasena ingresada es incorrecta. Verifique e intente nuevamente.');
+        passEl.classList.add('error');
+      }
+      if (attempts >= 3) startLockout();
+    }
+
+  } else {
+    /* Autenticacion de administrador: valida contra credenciales hardcoded (demo) */
+    const admin = ADMIN_CREDENTIALS.find(a => a.email === email && a.password === pass);
+
+    if (admin) {
+      sessionStorage.setItem('admin_session', JSON.stringify({
+        nombre:  admin.nombre,
+        email:   admin.email,
+        rol:     admin.rol,
+        loginAt: new Date().toISOString()
+      }));
+      showAlert('Acceso de administrador concedido. Redirigiendo...', 'success');
+      setTimeout(() => { window.location.href = 'admin-panel.html'; }, 900);
+    } else {
+      btnLogin.classList.remove('loading');
+      btnLogin.disabled = false;
+      attempts++;
+      showAlert('Credenciales de administrador incorrectas. Verifique e intente nuevamente.');
+      passEl.classList.add('error');
+      if (attempts >= 3) startLockout();
+    }
+  }
+}
+
+/* Asignacion de eventos a los botones de seleccion de rol */
+roleBtnClient.addEventListener('click', () => switchRole('client'));
+roleBtnAdmin.addEventListener('click',  () => switchRole('admin'));
+
+/* Evento del boton principal de acceso */
+btnLogin.addEventListener('click', handleLogin);
+
+/* Soporte para envio del formulario con la tecla Enter */
+[emailEl, passEl].forEach(el => {
+  el.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+});
+
+/* Limpiar estado de error al modificar los campos */
+[emailEl, passEl].forEach(el => {
+  el.addEventListener('input', () => { el.classList.remove('error'); });
+});
+
+/* Informacion sobre recuperacion de contrasena */
+document.getElementById('btn-forgot').addEventListener('click', () => {
+  showAlert('La recuperacion de contrasena estara disponible en la proxima version del sistema.');
+});
+
+/* Rellenar el campo de email si fue guardado en una sesion anterior */
+const remembered = localStorage.getItem('cc_remember_email');
+if (remembered) {
+  emailEl.value = remembered;
+  document.getElementById('remember-me').checked = true;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Compara precios de materiales de construcción en Chile. Sodimac, Easy, Imperial — elige siempre el mejor precio." />
+  <meta name="theme-color" content="#1E3A5F" />
+  <title>ConstructoCompare PRO</title>
+
+  <!-- Favicon inline SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231E3A5F'/><text y='24' x='4' font-size='22'>🏗</text></svg>" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ───── OVERLAY ───── -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ───── NAVBAR ───── -->
+<nav class="navbar">
+  <a href="/" class="navbar-logo" aria-label="ConstructoCompare PRO">
+    <img src="assets/logo.png" alt="ConstructoCompare PRO" style="height:40px;width:auto;filter:none;" />
+  </a>
+
+  <div class="navbar-search">
+    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+    </svg>
+    <input
+      id="search-input"
+      type="search"
+      placeholder="Buscar materiales, marcas, categorías..."
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </div>
+
+  <div class="navbar-actions">
+    <div class="uf-indicator" title="Valor UF del día (simulado)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      UF hoy: <strong id="uf-value">cargando...</strong>
+    </div>
+
+    <!-- Auth nav (populated by auth.js) -->
+    <div id="nav-auth-container"></div>
+
+    <button id="quote-toggle" aria-label="Ver cotización">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+      </svg>
+      <span>Cotización</span>
+      <span class="quote-badge" id="quote-badge" aria-live="polite"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ───── APP LAYOUT ───── -->
+<div class="app-layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" aria-label="Filtros">
+
+    <div class="sidebar-section">
+      <p class="sidebar-title">Tiendas</p>
+      <div class="tienda-filters">
+        <button class="tienda-filter-btn active" data-store="all">
+          <span class="tienda-dot-lg" style="background: linear-gradient(135deg, #e53935, #43a047);"></span>
+          Todas las tiendas
+        </button>
+        <button class="tienda-filter-btn" data-store="Sodimac">
+          <span class="tienda-dot-lg" style="background: #e53935;"></span>
+          Sodimac
+        </button>
+        <button class="tienda-filter-btn" data-store="Easy">
+          <span class="tienda-dot-lg" style="background: #43a047;"></span>
+          Easy
+        </button>
+        <button class="tienda-filter-btn" data-store="Imperial">
+          <span class="tienda-dot-lg" style="background: #1565c0;"></span>
+          Imperial
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-title">Información</p>
+      <div style="font-size:0.8rem; color: var(--gray-600); line-height: 1.7; padding: 0 8px;">
+        <div>📦 <strong>12</strong> productos disponibles</div>
+        <div>🏪 <strong>3</strong> tiendas integradas</div>
+        <div>💱 Conversión en tiempo real a UF</div>
+        <div>📄 Exportación a PDF incluida</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <p class="sidebar-title">Leyenda</p>
+      <div style="font-size:0.78rem; color: var(--gray-600); display: flex; flex-direction: column; gap: 6px; padding: 0 8px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="background:#F57C00; color:#fff; padding:2px 7px; border-radius:999px; font-size:0.65rem; font-weight:800; white-space:nowrap;">MEJOR</span>
+          Mejor precio disponible
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="background:#e8f5e9; color:#1B5E20; padding:2px 7px; border-radius:999px; font-size:0.65rem; font-weight:700; white-space:nowrap;">Ahorra $X</span>
+          Diferencia vs precio mayor
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="background:#e0e0e0; color:#666; padding:2px 7px; border-radius:999px; font-size:0.65rem; font-weight:700; white-space:nowrap;">Sin stock</span>
+          No disponible en tienda
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main-content">
+
+    <div class="content-header">
+      <span id="results-count">Cargando...</span>
+    </div>
+
+    <!-- Category chips -->
+    <div class="category-filters-wrap" id="category-filters" role="group" aria-label="Filtrar por categoría"></div>
+
+    <!-- Products grid -->
+    <div class="products-grid" id="products-grid" role="list" aria-label="Listado de productos">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p>Cargando productos...</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ───── QUOTE PANEL ───── -->
+<aside class="quote-panel" id="quote-panel" aria-label="Panel de cotización">
+
+  <div class="quote-header">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:8px;">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+      </svg>
+      Mi Cotización
+    </h2>
+    <button id="close-quote" aria-label="Cerrar panel">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="quote-body" id="quote-items" aria-live="polite">
+    <div class="quote-empty">
+      <div class="quote-empty-icon">📋</div>
+      <p>Tu cotización está vacía</p>
+      <small>Agrega productos desde el catálogo</small>
+    </div>
+  </div>
+
+  <div class="quote-footer">
+    <div class="quote-totals">
+      <div class="quote-total-row">
+        <span class="label">Subtotal</span>
+        <span class="value" id="quote-subtotal">$0</span>
+      </div>
+      <div class="quote-total-row main">
+        <span class="label">Total</span>
+        <span class="value" id="quote-total">$0</span>
+      </div>
+      <div class="quote-total-row">
+        <span class="label" style="color: var(--gray-400); font-size: 0.75rem;">Equivalente en UF</span>
+        <span class="value" style="color: var(--gray-400); font-family: var(--mono); font-size: 0.8rem;" id="quote-total-uf">0.00 UF</span>
+      </div>
+      <div class="quote-savings" id="quote-savings" role="status"></div>
+    </div>
+
+    <div class="quote-actions">
+      <button class="btn-primary" id="save-quote" style="background:var(--blue-dark);margin-bottom:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Guardar cotización
+      </button>
+      <button class="btn-primary" id="export-pdf">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        Exportar cotización PDF
+      </button>
+      <button class="btn-secondary" id="clear-quote">Vaciar cotización</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ───── SCRIPTS ───── -->
+<script src="auth.js"></script>
+<script>
+// Inject auth nav styles
+document.head.insertAdjacentHTML('beforeend', `<style>
+.nav-auth-btn{padding:7px 16px;border-radius:999px;font-size:.8rem;font-weight:600;transition:.2s;white-space:nowrap;}
+.nav-auth-btn.ghost{border:1.5px solid rgba(255,255,255,.3);color:#fff;}
+.nav-auth-btn.ghost:hover{background:rgba(255,255,255,.1);}
+.nav-auth-btn.primary{background:var(--orange);color:#fff;}
+.nav-user-btn{display:flex;align-items:center;gap:8px;padding:5px 12px;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.82rem;font-weight:600;cursor:pointer;border:none;font-family:inherit;}
+.nav-user-btn:hover{background:rgba(255,255,255,.18);}
+.nav-avatar{width:26px;height:26px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:#fff;flex-shrink:0;}
+.nav-user-menu{position:relative;}
+.nav-dropdown{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--gray-200);border-radius:14px;box-shadow:0 12px 40px rgba(30,58,95,.15);padding:8px;min-width:210px;display:none;z-index:300;}
+.nav-dropdown.open{display:block;animation:fadeIn .15s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.nav-dropdown-header{padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.nav-dropdown-avatar{width:34px;height:34px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:#fff;flex-shrink:0;}
+.nav-dropdown-name{font-size:.8rem;font-weight:700;color:var(--blue-dark);}
+.nav-dropdown-email{font-size:.68rem;color:var(--gray-400);}
+.nav-dropdown-divider{height:1px;background:var(--gray-100);margin:4px 0;}
+.nav-dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:.8rem;font-weight:500;color:#374151;cursor:pointer;transition:.2s;width:100%;text-align:left;border:none;background:none;font-family:inherit;}
+.nav-dropdown-item:hover{background:var(--gray-50);}
+.nav-dropdown-item.danger{color:var(--red);}
+.nav-dropdown-item.danger:hover{background:#ffebee;}
+.nav-user-name{max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+</style>`);
+Auth.renderNavAuth('nav-auth-container');
+</script>
+<script src="main.js" defer></script>
+
+<!-- Acceso admin (discreto) -->
+<a href="admin.html" style="position:fixed;bottom:12px;left:16px;font-size:.68rem;color:var(--gray-400);opacity:.35;transition:opacity .2s;text-decoration:none;z-index:10" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.35'">⚙ Admin</a>
+
+</body>
+</html>

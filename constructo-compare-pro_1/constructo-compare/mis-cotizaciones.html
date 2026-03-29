@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mis Cotizaciones — ConstructoCompare PRO</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231E3A5F'/><text y='24' x='4' font-size='22'>📋</text></svg>"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+.quotes-page { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+.quotes-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
+.quotes-header h1 { font-size:1.5rem; font-weight:800; color:var(--blue-dark); }
+.quotes-header p  { font-size:.875rem; color:var(--gray-400); margin-top:4px; }
+.quotes-count { background:var(--orange-pale); color:var(--orange); font-size:.75rem; font-weight:700; padding:4px 12px; border-radius:999px; }
+
+.quote-card {
+  background:var(--white); border:1.5px solid var(--gray-200);
+  border-radius:16px; margin-bottom:14px; overflow:hidden;
+  transition:.2s;
+}
+.quote-card:hover { border-color:var(--blue-light); box-shadow:0 4px 20px rgba(30,58,95,.08); }
+.quote-card-header {
+  padding:18px 20px; display:flex; align-items:center; gap:16px;
+  cursor:pointer; user-select:none;
+}
+.quote-card-header:hover { background:var(--gray-50); }
+.quote-id { font-family:var(--mono); font-size:.8rem; font-weight:700; color:var(--blue-dark); background:var(--blue-pale); padding:4px 10px; border-radius:6px; white-space:nowrap; }
+.quote-meta { flex:1; }
+.quote-name { font-size:.9rem; font-weight:700; color:var(--blue-dark); }
+.quote-date { font-size:.75rem; color:var(--gray-400); margin-top:2px; }
+.quote-total { font-family:var(--mono); font-size:1rem; font-weight:800; color:var(--orange); text-align:right; }
+.quote-total-uf { font-size:.72rem; color:var(--gray-400); font-family:var(--mono); }
+.quote-badge { font-size:.68rem; font-weight:700; padding:3px 9px; border-radius:999px; }
+.quote-badge.saved { background:#e8f5e9; color:#2e7d32; }
+.quote-toggle-icon { color:var(--gray-400); transition:transform .2s; }
+.quote-card.open .quote-toggle-icon { transform:rotate(180deg); }
+.quote-card-body { display:none; padding:0 20px 20px; border-top:1px solid var(--gray-100); }
+.quote-card.open .quote-card-body { display:block; }
+.quote-items-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.8rem; }
+.quote-items-table th { text-align:left; padding:6px 10px; color:var(--gray-400); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; font-weight:700; border-bottom:1px solid var(--gray-100); }
+.quote-items-table td { padding:8px 10px; border-bottom:1px solid var(--gray-50); color:var(--gray-900); }
+.quote-items-table tr:last-child td { border-bottom:none; }
+.quote-actions-row { display:flex; gap:8px; flex-wrap:wrap; }
+.btn-quote-pdf {
+  display:flex; align-items:center; gap:6px;
+  padding:9px 18px; background:var(--orange); color:#fff;
+  border-radius:var(--radius-md); font-size:.825rem; font-weight:700;
+  transition:.2s;
+}
+.btn-quote-pdf:hover { background:var(--orange-light); }
+.btn-quote-del {
+  display:flex; align-items:center; gap:6px;
+  padding:9px 16px; border:1.5px solid var(--gray-200); color:var(--red);
+  border-radius:var(--radius-md); font-size:.825rem; font-weight:600;
+  transition:.2s;
+}
+.btn-quote-del:hover { background:#ffebee; border-color:var(--red); }
+
+.quotes-empty {
+  text-align:center; padding:80px 24px;
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+}
+.quotes-empty-icon { font-size:4rem; }
+.quotes-empty h2 { font-size:1.2rem; font-weight:700; color:var(--blue-dark); }
+.quotes-empty p { font-size:.875rem; color:var(--gray-400); }
+.btn-go-catalog {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:12px 24px; background:var(--orange); color:#fff;
+  border-radius:999px; font-size:.9rem; font-weight:700;
+  text-decoration:none; transition:.2s; margin-top:8px;
+}
+.btn-go-catalog:hover { background:var(--orange-light); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo">
+    <img src="assets/logo.png" alt="ConstructoCompare PRO" style="height:40px;width:auto;"/>
+    <div class="navbar-brand">ConstructoCompare <span>PRO</span></div>
+  </a>
+  <div style="flex:1"></div>
+  <div id="nav-auth-container"></div>
+</nav>
+
+<div style="margin-top:64px;" class="quotes-page">
+  <div class="quotes-header">
+    <div>
+      <h1>Mis Cotizaciones</h1>
+      <p>Historial completo de tus cotizaciones guardadas</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="quotes-count" id="quotes-count">0 cotizaciones</span>
+      <a href="index.html" class="btn-go-catalog" style="padding:9px 18px;font-size:.825rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nueva cotización
+      </a>
+    </div>
+  </div>
+  <div id="quotes-container"></div>
+</div>
+
+<script src="auth.js"></script>
+<script>
+// Auth guard
+const session = Auth.getSession();
+if (!session) window.location.href = 'login.html';
+
+// Render nav
+Auth.renderNavAuth('nav-auth-container');
+
+// Inject nav auth styles
+document.head.insertAdjacentHTML('beforeend', `<style>
+.nav-auth-btn{padding:8px 18px;border-radius:999px;font-size:.875rem;font-weight:600;transition:.2s;}
+.nav-auth-btn.ghost{border:1.5px solid rgba(255,255,255,.3);color:#fff;}
+.nav-auth-btn.ghost:hover{background:rgba(255,255,255,.1);}
+.nav-auth-btn.primary{background:var(--orange);color:#fff;box-shadow:0 4px 14px rgba(245,124,0,.3);}
+.nav-user-btn{display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(255,255,255,.1);border-radius:999px;color:#fff;font-size:.875rem;font-weight:600;}
+.nav-avatar{width:28px;height:28px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;}
+.nav-user-menu{position:relative;}
+.nav-dropdown{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid var(--gray-200);border-radius:14px;box-shadow:0 12px 40px rgba(30,58,95,.15);padding:8px;min-width:220px;display:none;z-index:200;}
+.nav-dropdown.open{display:block;}
+.nav-dropdown-header{padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.nav-dropdown-avatar{width:36px;height:36px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;}
+.nav-dropdown-name{font-size:.825rem;font-weight:700;color:var(--blue-dark);}
+.nav-dropdown-email{font-size:.72rem;color:var(--gray-400);}
+.nav-dropdown-divider{height:1px;background:var(--gray-100);margin:4px 0;}
+.nav-dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:.825rem;font-weight:500;color:var(--gray-700,#374151);cursor:pointer;transition:.2s;width:100%;text-align:left;}
+.nav-dropdown-item:hover{background:var(--gray-50);}
+.nav-dropdown-item.danger{color:var(--red);}
+.nav-dropdown-item.danger:hover{background:#ffebee;}
+</style>`);
+
+function formatCLP(v) {
+  return new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',minimumFractionDigits:0}).format(v);
+}
+
+function renderQuotes() {
+  const quotes = Auth.getUserQuotes();
+  const container = document.getElementById('quotes-container');
+  document.getElementById('quotes-count').textContent = quotes.length + ' cotización' + (quotes.length !== 1 ? 'es' : '');
+
+  if (quotes.length === 0) {
+    container.innerHTML = `
+      <div class="quotes-empty">
+        <div class="quotes-empty-icon">📋</div>
+        <h2>Aún no tienes cotizaciones guardadas</h2>
+        <p>Ve al catálogo, agrega productos y guarda tu primera cotización</p>
+        <a href="index.html" class="btn-go-catalog">Ir al catálogo</a>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = quotes.map((q, idx) => `
+    <div class="quote-card" id="qcard-${idx}">
+      <div class="quote-card-header" onclick="toggleCard(${idx})">
+        <span class="quote-id">${q.id}</span>
+        <div class="quote-meta">
+          <div class="quote-name">${q.nombre || 'Cotización sin nombre'}</div>
+          <div class="quote-date">${q.fecha} · ${q.items ? q.items.length : 0} producto(s)</div>
+        </div>
+        <div style="text-align:right">
+          <div class="quote-total">${formatCLP(q.total || 0)}</div>
+          <div class="quote-total-uf">${q.totalUF || '—'}</div>
+        </div>
+        <span class="quote-badge saved">Guardada</span>
+        <svg class="quote-toggle-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="quote-card-body">
+        <table class="quote-items-table">
+          <thead><tr><th>Producto</th><th>Tienda</th><th>Cant.</th><th>Unit.</th><th>Subtotal</th></tr></thead>
+          <tbody>
+            ${(q.items || []).map(item => `
+              <tr>
+                <td>${item.nombre || item.producto?.nombre || '—'}</td>
+                <td style="color:${item.color || 'var(--gray-600)'}; font-weight:600">${item.tienda || '—'}</td>
+                <td style="text-align:center;font-weight:700">${item.cantidad || 1}</td>
+                <td style="font-family:var(--mono)">${formatCLP(item.precio || 0)}</td>
+                <td style="font-family:var(--mono);font-weight:700">${formatCLP((item.precio || 0) * (item.cantidad || 1))}</td>
+              </tr>`).join('')}
+            <tr style="background:var(--orange-pale)">
+              <td colspan="4" style="font-weight:700;color:var(--orange)">TOTAL</td>
+              <td style="font-family:var(--mono);font-weight:800;color:var(--orange)">${formatCLP(q.total || 0)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="quote-actions-row">
+          <button class="btn-quote-pdf" onclick="exportQuotePDF(${idx})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Exportar PDF
+          </button>
+          <button class="btn-quote-del" onclick="deleteQuote('${q.id}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleCard(idx) {
+  document.getElementById('qcard-' + idx).classList.toggle('open');
+}
+
+function deleteQuote(id) {
+  if (!confirm('¿Eliminar esta cotización? Esta acción no se puede deshacer.')) return;
+  Auth.deleteQuote(id);
+  renderQuotes();
+}
+
+function exportQuotePDF(idx) {
+  const q = Auth.getUserQuotes()[idx];
+  if (!q) return;
+  const rows = (q.items || []).map(item => `
+    <tr>
+      <td>${item.nombre || '—'}</td>
+      <td>${item.tienda || '—'}</td>
+      <td style="text-align:center">${item.cantidad || 1}</td>
+      <td style="text-align:right">$${(item.precio || 0).toLocaleString('es-CL')}</td>
+      <td style="text-align:right">$${((item.precio || 0) * (item.cantidad || 1)).toLocaleString('es-CL')}</td>
+    </tr>`).join('');
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"/><title>Cotización ${q.id}</title>
+<style>body{font-family:Arial,sans-serif;padding:40px;color:#1E3A5F}h1{color:#1E3A5F}span.o{color:#F57C00}
+table{width:100%;border-collapse:collapse;margin-top:20px}th{background:#1E3A5F;color:#fff;padding:9px 12px;text-align:left}
+td{padding:8px 12px;border-bottom:1px solid #eee}.tot td{background:#FFF3E0;font-weight:bold;color:#E65100}
+.foot{margin-top:28px;font-size:.8em;color:#999}</style></head><body>
+<h1>ConstructoCompare <span class="o">PRO</span></h1>
+<p><b>${q.nombre || 'Cotización'}</b> — ${q.fecha}</p>
+<table><thead><tr><th>Producto</th><th>Tienda</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr></thead>
+<tbody>${rows}<tr class="tot"><td colspan="4">TOTAL</td><td style="text-align:right">$${(q.total||0).toLocaleString('es-CL')} / ${q.totalUF||''}</td></tr></tbody></table>
+<div class="foot">Cotización generada por ConstructoCompare PRO. Precios referenciales.</div>
+</body></html>`;
+  const w = window.open('','_blank');
+  if (w) { w.document.write(html); w.document.close(); w.print(); }
+}
+
+renderQuotes();
+</script>
+</body>
+</html>

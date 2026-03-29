@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/",                 "dest": "/landing.html" },
+    { "src": "/app",              "dest": "/index.html" },
+    { "src": "/login",            "dest": "/login.html" },
+    { "src": "/register",         "dest": "/register.html" },
+    { "src": "/mis-cotizaciones", "dest": "/mis-cotizaciones.html" },
+    { "src": "/admin",            "dest": "/admin.html" },
+    { "src": "/admin-panel",      "dest": "/admin-panel.html" },
+    { "src": "/(.*)",             "dest": "/$1" }
+  ],
+  "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "Cache-Control", "value": "public, max-age=3600" }
+    ]}
+  ]
+}

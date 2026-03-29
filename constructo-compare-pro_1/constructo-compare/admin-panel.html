@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel Admin — ConstructoCompare PRO</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231E3A5F'/><text y='24' x='6' font-size='20'>⚙️</text></svg>"/>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+
+<!-- Mobile toggle -->
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menú">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="admin-shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-logo">
+      <img src="assets/logo.png" alt="ConstructoCompare PRO"/>
+      <div class="sidebar-logo-text">
+        ConstructoCompare
+        <span>Admin PRO</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Principal</span>
+      <div class="nav-item active" data-page="dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+
+      <span class="nav-section-label">Gestión</span>
+      <div class="nav-item" data-page="productos">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        Productos
+        <span class="nav-badge" id="nav-badge-products">12</span>
+      </div>
+      <div class="nav-item" data-page="usuarios">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Usuarios
+        <span class="nav-badge" id="nav-badge-users">6</span>
+      </div>
+      <div class="nav-item" data-page="cotizaciones">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Cotizaciones
+        <span class="nav-badge" id="nav-badge-quotes">8</span>
+      </div>
+
+      <span class="nav-section-label">Sistema</span>
+      <div class="nav-item" data-page="logs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+        Actividad
+      </div>
+      <a class="nav-item" href="index.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ver aplicación
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar" id="admin-avatar">CM</div>
+        <div class="user-info">
+          <div class="user-name" id="admin-name">Carlos Mendoza</div>
+          <div class="user-role">Administrador</div>
+        </div>
+        <button class="btn-logout" id="btn-logout" title="Cerrar sesión">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <div class="admin-topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-breadcrumb" id="topbar-breadcrumb">Admin › Dashboard</div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <button class="topbar-btn ghost" id="topbar-refresh">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Actualizar
+      </button>
+      <button class="topbar-btn primary" id="topbar-action">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span id="topbar-action-label">Nuevo</span>
+      </button>
+    </div>
+
+    <!-- ─── PAGE: DASHBOARD ─── -->
+    <div class="admin-page active" id="page-dashboard">
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Cotizaciones por mes
+          </div>
+          <div class="bar-chart" id="bar-chart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+            Distribución por tienda
+          </div>
+          <div class="donut-wrap" id="donut-chart"></div>
+        </div>
+      </div>
+      <!-- Recent quotes on dashboard -->
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-header-left">
+            <span class="table-title">Cotizaciones recientes</span>
+          </div>
+          <button class="topbar-btn ghost" style="font-size:0.78rem;padding:6px 12px;" onclick="switchPage('cotizaciones')">Ver todas →</button>
+        </div>
+        <table class="data-table" id="dash-recent-quotes"></table>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: PRODUCTOS ─── -->
+    <div class="admin-page" id="page-productos">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-header-left">
+            <span class="table-title">Catálogo de Productos</span>
+            <span class="table-count" id="prod-count">0</span>
+          </div>
+          <div class="table-search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="search" id="prod-search" placeholder="Buscar producto..."/>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Nombre</th><th>Categoría</th>
+                <th>Sodimac</th><th>Easy</th><th>Imperial</th>
+                <th>Mejor precio</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: USUARIOS ─── -->
+    <div class="admin-page" id="page-usuarios">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-header-left">
+            <span class="table-title">Usuarios registrados</span>
+            <span class="table-count" id="user-count">0</span>
+          </div>
+          <div class="table-search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="search" id="user-search" placeholder="Buscar usuario..."/>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Usuario</th><th>Email</th><th>Rol</th>
+                <th>Estado</th><th>Cotizaciones</th><th>Registro</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: COTIZACIONES ─── -->
+    <div class="admin-page" id="page-cotizaciones">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-header-left">
+            <span class="table-title">Todas las cotizaciones</span>
+            <span class="table-count" id="quote-count">0</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <select id="quote-filter-status" style="height:36px;padding:0 10px;border:1.5px solid var(--gray-200);border-radius:6px;font-size:0.82rem;color:var(--gray-900);background:var(--gray-50);outline:none;">
+              <option value="">Todos los estados</option>
+              <option value="aprobada">Aprobadas</option>
+              <option value="pendiente">Pendientes</option>
+              <option value="rechazada">Rechazadas</option>
+            </select>
+            <div class="table-search">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="search" id="quote-search" placeholder="Buscar cotización..."/>
+            </div>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Usuario</th><th>Fecha</th>
+                <th>Ítems</th><th>Total CLP</th><th>Tiendas</th>
+                <th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="quotes-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAGE: LOGS ─── -->
+    <div class="admin-page" id="page-logs">
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-header-left">
+            <span class="table-title">Registro de actividad</span>
+          </div>
+          <button class="topbar-btn ghost" style="font-size:0.78rem;padding:6px 12px;" onclick="AdminData.logs=[]; renderLogs(); showToast('Logs limpiados','warning')">Limpiar</button>
+        </div>
+        <div class="log-list" id="log-list"></div>
+      </div>
+    </div>
+
+  </div><!-- /admin-main -->
+</div><!-- /admin-shell -->
+
+<!-- ═══ MODAL: Producto ═══ -->
+<div class="modal-overlay" id="modal-product">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-product-title">Nuevo Producto</h3>
+      <button class="modal-close" onclick="closeModal('modal-product')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>ID Producto</label><input id="prod-id" placeholder="P013"/></div>
+        <div class="form-group"><label>Categoría</label>
+          <select id="prod-cat">
+            <option>Cementos y Morteros</option><option>Revestimientos</option>
+            <option>Estructura y Acero</option><option>Pinturas</option>
+            <option>Albañilería</option><option>Maderas y Tableros</option>
+            <option>Gasfitería</option><option>Ferretería</option>
+            <option>Impermeabilización</option><option>Aislación</option>
+          </select>
+        </div>
+        <div class="form-group full"><label>Nombre del producto</label><input id="prod-name" placeholder="Ej: Cemento Portland 25kg"/></div>
+        <div class="form-group"><label>Unidad</label><input id="prod-unit" placeholder="saco, m², barra..."/></div>
+        <div class="form-group"><label>Precio Sodimac ($)</label><input type="number" id="prod-price-sodimac" placeholder="9990"/></div>
+        <div class="form-group"><label>Precio Easy ($)</label><input type="number" id="prod-price-easy" placeholder="9490"/></div>
+        <div class="form-group"><label>Precio Imperial ($)</label><input type="number" id="prod-price-imperial" placeholder="9700"/></div>
+        <div class="form-group">
+          <label>Stock</label>
+          <select id="prod-stock">
+            <option value="all">Disponible en todas</option>
+            <option value="sodimac-easy">Sodimac + Easy</option>
+            <option value="sodimac">Solo Sodimac</option>
+            <option value="easy">Solo Easy</option>
+            <option value="imperial">Solo Imperial</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-product')">Cancelar</button>
+      <button class="btn-save" onclick="saveProduct()">Guardar producto</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Usuario ═══ -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-user-title">Nuevo Usuario</h3>
+      <button class="modal-close" onclick="closeModal('modal-user')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Nombre completo</label><input id="user-nombre" placeholder="Juan Pérez"/></div>
+        <div class="form-group full"><label>Correo electrónico</label><input type="email" id="user-email" placeholder="juan@empresa.cl"/></div>
+        <div class="form-group">
+          <label>Rol</label>
+          <select id="user-rol">
+            <option value="usuario">Usuario</option>
+            <option value="editor">Editor</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="user-estado">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-user')">Cancelar</button>
+      <button class="btn-save" onclick="saveUser()">Guardar usuario</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: Ver Cotización ═══ -->
+<div class="modal-overlay" id="modal-quote-view">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-quote-id">COT-001</h3>
+      <button class="modal-close" onclick="closeModal('modal-quote-view')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-quote-body"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-quote-view')">Cerrar</button>
+      <button class="btn-save" id="modal-quote-approve" onclick="">Aprobar cotización</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONFIRM DELETE ═══ -->
+<div class="modal-overlay confirm-modal" id="modal-confirm">
+  <div class="modal">
+    <div class="confirm-body">
+      <div class="confirm-icon">🗑️</div>
+      <div class="confirm-title" id="confirm-title">¿Eliminar este elemento?</div>
+      <div class="confirm-msg" id="confirm-msg">Esta acción no se puede deshacer.</div>
+    </div>
+    <div class="confirm-actions">
+      <button class="btn-confirm-cancel" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="btn-confirm-del" id="btn-confirm-del">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="admin-toast" id="admin-toast"></div>
+
+<script>
+// ════════════════════════════════════════════════
+// ConstructoCompare PRO — admin-panel.js
+// ════════════════════════════════════════════════
+
+// ── Auth Guard ──────────────────────────────────
+const session = JSON.parse(sessionStorage.getItem('admin_session') || 'null');
+if (!session) { window.location.href = 'admin.html'; }
+
+// ── Populate session info ────────────────────────
+document.getElementById('admin-name').textContent = session?.nombre || 'Admin';
+document.getElementById('admin-avatar').textContent =
+  (session?.nombre || 'A').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+  sessionStorage.removeItem('admin_session');
+  window.location.href = 'admin.html';
+});
+
+// ── State ────────────────────────────────────────
+const AdminData = {
+  products: [],
+  users: [],
+  quotes: [],
+  metrics: {},
+  logs: [],
+  editingProductId: null,
+  editingUserId: null,
+};
+
+// ── Utils ────────────────────────────────────────
+function formatCLP(v) {
+  return new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',minimumFractionDigits:0}).format(v);
+}
+function generateId(prefix) {
+  return prefix + Date.now().toString(36).toUpperCase().slice(-4);
+}
+
+function showToast(msg, type = 'info') {
+  const el = document.getElementById('admin-toast');
+  el.textContent = msg;
+  el.className = 'admin-toast ' + type;
+  void el.offsetWidth;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+});
+
+// ── Fake API  ────────────────────────────────────
+// → reemplazar cada función por fetch() al backend FastAPI
+
+async function loadAllData() {
+  const res = await Promise.all([
+    fetch('data/products.json').then(r => r.json()),
+    fetch('data/admin.json').then(r => r.json()),
+  ]);
+  AdminData.products = res[0];
+  AdminData.users    = res[1].usuarios;
+  AdminData.quotes   = res[1].cotizaciones;
+  AdminData.metrics  = res[1].metricas;
+  AdminData.logs     = res[1].logs;
+}
+
+// ── Navigation ───────────────────────────────────
+const PAGE_CONFIG = {
+  dashboard:    { title: 'Dashboard',       breadcrumb: 'Admin › Dashboard',     action: null },
+  productos:    { title: 'Productos',       breadcrumb: 'Admin › Productos',      action: 'Nuevo producto' },
+  usuarios:     { title: 'Usuarios',        breadcrumb: 'Admin › Usuarios',       action: 'Nuevo usuario' },
+  cotizaciones: { title: 'Cotizaciones',    breadcrumb: 'Admin › Cotizaciones',   action: null },
+  logs:         { title: 'Actividad',       breadcrumb: 'Admin › Actividad',      action: null },
+};
+
+function switchPage(id) {
+  document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id)?.classList.add('active');
+  document.querySelector(`.nav-item[data-page="${id}"]`)?.classList.add('active');
+  const cfg = PAGE_CONFIG[id];
+  if (cfg) {
+    document.getElementById('topbar-title').textContent = cfg.title;
+    document.getElementById('topbar-breadcrumb').textContent = cfg.breadcrumb;
+    document.getElementById('topbar-action').style.display = cfg.action ? 'flex' : 'none';
+    document.getElementById('topbar-action-label').textContent = cfg.action || '';
+  }
+  // Close sidebar on mobile
+  document.getElementById('admin-sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+}
+
+document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+  item.addEventListener('click', () => switchPage(item.dataset.page));
+});
+
+document.getElementById('topbar-action').addEventListener('click', () => {
+  const active = document.querySelector('.nav-item.active')?.dataset?.page;
+  if (active === 'productos') openProductModal();
+  if (active === 'usuarios') openUserModal();
+});
+
+// Mobile sidebar
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+  document.getElementById('admin-sidebar').classList.add('open');
+  document.getElementById('sidebar-overlay').classList.add('visible');
+});
+document.getElementById('sidebar-overlay').addEventListener('click', () => {
+  document.getElementById('admin-sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+});
+
+// Refresh
+document.getElementById('topbar-refresh').addEventListener('click', async () => {
+  showToast('Datos actualizados ✓', 'success');
+});
+
+// ── Dashboard ────────────────────────────────────
+function renderDashboard() {
+  const m = AdminData.metrics;
+  const statsData = [
+    { label: 'Total cotizaciones', value: m.totalCotizaciones, delta: '+' + m.cotizacionesMes + ' este mes', trend: 'up', icon: '📋', color: 'blue' },
+    { label: 'Valor cotizado', value: formatCLP(m.valorTotalCotizado), delta: 'Acumulado', trend: 'neutral', icon: '💰', color: 'orange' },
+    { label: 'Usuarios activos', value: m.usuariosActivos, delta: 'de ' + AdminData.users.length + ' totales', trend: 'up', icon: '👥', color: 'green' },
+    { label: 'Ahorro promedio', value: m.ahorroPromedio + '%', delta: 'vs precio mayor', trend: 'up', icon: '📉', color: 'green' },
+  ];
+
+  document.getElementById('stats-grid').innerHTML = statsData.map(s => `
+    <div class="stat-card">
+      <div class="stat-icon ${s.color}">${s.icon}</div>
+      <div class="stat-body">
+        <div class="stat-label">${s.label}</div>
+        <div class="stat-value">${s.value}</div>
+        <div class="stat-delta ${s.trend}">${s.trend === 'up' ? '↑' : s.trend === 'down' ? '↓' : '—'} ${s.delta}</div>
+      </div>
+    </div>`).join('');
+
+  // Bar chart
+  const maxVal = Math.max(...m.tendenciaMensual.map(t => t.cotizaciones));
+  document.getElementById('bar-chart').innerHTML = m.tendenciaMensual.map(t => `
+    <div class="bar-group">
+      <div class="bar" style="height:${(t.cotizaciones/maxVal)*100}px" title="${t.cotizaciones} cotizaciones"></div>
+      <span class="bar-label">${t.mes}</span>
+    </div>`).join('');
+
+  // Donut/tiendas
+  document.getElementById('donut-chart').innerHTML = m.distribucionTiendas.map(d => `
+    <div>
+      <div class="donut-row">
+        <div class="donut-dot" style="background:${d.color}"></div>
+        <span class="donut-label">${d.tienda}</span>
+        <span class="donut-pct">${d.porcentaje}%</span>
+      </div>
+      <div class="donut-bar-wrap">
+        <div class="donut-bar-fill" style="width:${d.porcentaje}%;background:${d.color}"></div>
+      </div>
+    </div>`).join('');
+
+  // Recent quotes
+  const recent = AdminData.quotes.slice(0, 5);
+  document.getElementById('dash-recent-quotes').innerHTML = `
+    <thead><tr><th>ID</th><th>Usuario</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead>
+    <tbody>${recent.map(q => `
+      <tr>
+        <td><code style="font-family:var(--mono);font-size:0.78rem;color:var(--blue-dark)">${q.id}</code></td>
+        <td>${q.usuario}</td>
+        <td>${q.fecha}</td>
+        <td style="font-family:var(--mono);font-weight:700">${formatCLP(q.total)}</td>
+        <td>${badgeHTML(q.estado)}</td>
+      </tr>`).join('')}
+    </tbody>`;
+}
+
+// ── Products ─────────────────────────────────────
+function renderProducts(filter = '') {
+  const list = filter
+    ? AdminData.products.filter(p =>
+        p.nombre.toLowerCase().includes(filter.toLowerCase()) ||
+        p.id.toLowerCase().includes(filter.toLowerCase()))
+    : AdminData.products;
+
+  document.getElementById('prod-count').textContent = list.length;
+  document.getElementById('nav-badge-products').textContent = AdminData.products.length;
+
+  const tbody = document.getElementById('products-tbody');
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="table-empty"><div class="table-empty-icon">📦</div><p>No hay productos</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(p => {
+    const best = p.tiendas.filter(t => t.stock).reduce((a, b) => a.precio < b.precio ? a : b, p.tiendas[0]);
+    return `<tr>
+      <td><code style="font-family:var(--mono);font-size:0.78rem;color:var(--blue-mid)">${p.id}</code></td>
+      <td style="font-weight:600;max-width:200px">${p.nombre}</td>
+      <td><span class="badge blue">${p.categoria}</span></td>
+      ${p.tiendas.map(t => `<td style="font-family:var(--mono);font-size:0.8rem;${!t.stock?'color:var(--gray-400);text-decoration:line-through':'color:var(--blue-dark);font-weight:700'}">${formatCLP(t.precio)}</td>`).join('')}
+      <td><span style="font-family:var(--mono);font-size:0.82rem;font-weight:800;color:var(--orange)">${formatCLP(best.precio)}</span><br/><small style="color:var(--gray-400);font-size:0.68rem">${best.tienda}</small></td>
+      <td><div class="actions-cell">
+        <button class="action-btn edit" onclick="openProductModal('${p.id}')" title="Editar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="action-btn del" onclick="confirmDelete('product','${p.id}','${p.nombre}')" title="Eliminar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openProductModal(id = null) {
+  AdminData.editingProductId = id;
+  document.getElementById('modal-product-title').textContent = id ? 'Editar Producto' : 'Nuevo Producto';
+  if (id) {
+    const p = AdminData.products.find(x => x.id === id);
+    if (p) {
+      document.getElementById('prod-id').value = p.id;
+      document.getElementById('prod-name').value = p.nombre;
+      document.getElementById('prod-cat').value = p.categoria;
+      document.getElementById('prod-unit').value = p.unidad;
+      document.getElementById('prod-price-sodimac').value = p.tiendas.find(t=>t.tienda==='Sodimac')?.precio || '';
+      document.getElementById('prod-price-easy').value = p.tiendas.find(t=>t.tienda==='Easy')?.precio || '';
+      document.getElementById('prod-price-imperial').value = p.tiendas.find(t=>t.tienda==='Imperial')?.precio || '';
+    }
+  } else {
+    ['prod-id','prod-name','prod-unit','prod-price-sodimac','prod-price-easy','prod-price-imperial'].forEach(id => document.getElementById(id).value = '');
+  }
+  openModal('modal-product');
+}
+
+function saveProduct() {
+  const nombre = document.getElementById('prod-name').value.trim();
+  const id     = document.getElementById('prod-id').value.trim() || generateId('P');
+  if (!nombre) { showToast('Ingresa el nombre del producto', 'error'); return; }
+
+  const newProduct = {
+    id, nombre,
+    categoria: document.getElementById('prod-cat').value,
+    unidad: document.getElementById('prod-unit').value || 'unidad',
+    imagen: `https://placehold.co/300x300/EBF3FF/1E3A5F?text=${encodeURIComponent(nombre.slice(0,8))}`,
+    especificaciones: {},
+    tiendas: [
+      { tienda: 'Sodimac', precio: parseInt(document.getElementById('prod-price-sodimac').value) || 0, stock: true, url: '#' },
+      { tienda: 'Easy',    precio: parseInt(document.getElementById('prod-price-easy').value) || 0, stock: true, url: '#' },
+      { tienda: 'Imperial',precio: parseInt(document.getElementById('prod-price-imperial').value) || 0, stock: true, url: '#' },
+    ]
+  };
+
+  if (AdminData.editingProductId) {
+    const idx = AdminData.products.findIndex(p => p.id === AdminData.editingProductId);
+    if (idx >= 0) AdminData.products[idx] = newProduct;
+    showToast('Producto actualizado ✓', 'success');
+    addLog('success', `Producto ${nombre} actualizado`);
+  } else {
+    AdminData.products.unshift(newProduct);
+    showToast('Producto creado ✓', 'success');
+    addLog('success', `Nuevo producto creado: ${nombre}`);
+  }
+
+  closeModal('modal-product');
+  renderProducts();
+}
+
+document.getElementById('prod-search').addEventListener('input', e => renderProducts(e.target.value));
+
+// ── Users ────────────────────────────────────────
+function getRolBadge(rol) {
+  const map = { admin: 'red', editor: 'yellow', usuario: 'blue' };
+  return `<span class="badge ${map[rol] || 'gray'}">${rol}</span>`;
+}
+
+function renderUsers(filter = '') {
+  const list = filter
+    ? AdminData.users.filter(u =>
+        u.nombre.toLowerCase().includes(filter.toLowerCase()) ||
+        u.email.toLowerCase().includes(filter.toLowerCase()))
+    : AdminData.users;
+
+  document.getElementById('user-count').textContent = list.length;
+  document.getElementById('nav-badge-users').textContent = AdminData.users.length;
+
+  const tbody = document.getElementById('users-tbody');
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="table-empty"><div class="table-empty-icon">👥</div><p>No hay usuarios</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(u => `<tr>
+    <td>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--blue-dark);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:800;color:#fff;flex-shrink:0">${u.avatar}</div>
+        <span style="font-weight:600">${u.nombre}</span>
+      </div>
+    </td>
+    <td style="color:var(--gray-600)">${u.email}</td>
+    <td>${getRolBadge(u.rol)}</td>
+    <td>${u.estado === 'activo'
+      ? '<span class="badge green">Activo</span>'
+      : '<span class="badge gray">Inactivo</span>'}</td>
+    <td style="font-family:var(--mono);font-weight:700;color:var(--blue-dark)">${u.cotizaciones}</td>
+    <td style="color:var(--gray-400);font-size:0.8rem">${u.fechaRegistro}</td>
+    <td><div class="actions-cell">
+      <button class="action-btn edit" onclick="openUserModal('${u.id}')" title="Editar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+      <button class="action-btn del" onclick="confirmDelete('user','${u.id}','${u.nombre}')" title="Eliminar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+      </button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function openUserModal(id = null) {
+  AdminData.editingUserId = id;
+  document.getElementById('modal-user-title').textContent = id ? 'Editar Usuario' : 'Nuevo Usuario';
+  if (id) {
+    const u = AdminData.users.find(x => x.id === id);
+    if (u) {
+      document.getElementById('user-nombre').value = u.nombre;
+      document.getElementById('user-email').value = u.email;
+      document.getElementById('user-rol').value = u.rol;
+      document.getElementById('user-estado').value = u.estado;
+    }
+  } else {
+    ['user-nombre','user-email'].forEach(id => document.getElementById(id).value = '');
+  }
+  openModal('modal-user');
+}
+
+function saveUser() {
+  const nombre = document.getElementById('user-nombre').value.trim();
+  const email  = document.getElementById('user-email').value.trim();
+  if (!nombre || !email) { showToast('Completa nombre y email', 'error'); return; }
+
+  if (AdminData.editingUserId) {
+    const u = AdminData.users.find(x => x.id === AdminData.editingUserId);
+    if (u) {
+      u.nombre = nombre; u.email = email;
+      u.rol    = document.getElementById('user-rol').value;
+      u.estado = document.getElementById('user-estado').value;
+      u.avatar = nombre.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+    }
+    showToast('Usuario actualizado ✓', 'success');
+    addLog('info', `Usuario ${nombre} actualizado`);
+  } else {
+    AdminData.users.unshift({
+      id: generateId('U'), nombre, email,
+      rol: document.getElementById('user-rol').value,
+      estado: document.getElementById('user-estado').value,
+      fechaRegistro: new Date().toISOString().split('T')[0],
+      cotizaciones: 0,
+      avatar: nombre.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase()
+    });
+    showToast('Usuario creado ✓', 'success');
+    addLog('info', `Nuevo usuario registrado: ${nombre}`);
+  }
+  closeModal('modal-user');
+  renderUsers();
+}
+
+document.getElementById('user-search').addEventListener('input', e => renderUsers(e.target.value));
+
+// ── Quotes ───────────────────────────────────────
+function badgeHTML(estado) {
+  const map = { aprobada: 'green', pendiente: 'yellow', rechazada: 'red' };
+  return `<span class="badge ${map[estado] || 'gray'}">${estado}</span>`;
+}
+
+function renderQuotes(filter = '', statusFilter = '') {
+  let list = AdminData.quotes;
+  if (filter) list = list.filter(q =>
+    q.id.toLowerCase().includes(filter.toLowerCase()) ||
+    q.usuario.toLowerCase().includes(filter.toLowerCase()));
+  if (statusFilter) list = list.filter(q => q.estado === statusFilter);
+
+  document.getElementById('quote-count').textContent = list.length;
+  document.getElementById('nav-badge-quotes').textContent = AdminData.quotes.length;
+
+  const tbody = document.getElementById('quotes-tbody');
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="table-empty"><div class="table-empty-icon">📋</div><p>No hay cotizaciones</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(q => `<tr>
+    <td><code style="font-family:var(--mono);font-size:0.78rem;color:var(--blue-dark);font-weight:700">${q.id}</code></td>
+    <td style="font-weight:500">${q.usuario}</td>
+    <td style="color:var(--gray-400);font-size:0.8rem">${q.fecha}</td>
+    <td style="text-align:center;font-weight:700;color:var(--blue-mid)">${q.items}</td>
+    <td style="font-family:var(--mono);font-weight:700;color:var(--blue-dark)">${formatCLP(q.total)}</td>
+    <td style="font-size:0.75rem;color:var(--gray-600)">${q.tiendas.join(', ')}</td>
+    <td>${badgeHTML(q.estado)}</td>
+    <td><div class="actions-cell">
+      <button class="action-btn view" onclick="viewQuote('${q.id}')" title="Ver detalle">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+      ${q.estado === 'pendiente' ? `
+      <button class="action-btn edit" onclick="changeQuoteStatus('${q.id}','aprobada')" title="Aprobar" style="color:var(--green)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+      <button class="action-btn del" onclick="changeQuoteStatus('${q.id}','rechazada')" title="Rechazar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>` : ''}
+    </div></td>
+  </tr>`).join('');
+}
+
+function viewQuote(id) {
+  const q = AdminData.quotes.find(x => x.id === id);
+  if (!q) return;
+  document.getElementById('modal-quote-id').textContent = q.id + ' — ' + q.usuario;
+  document.getElementById('modal-quote-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div><div style="font-size:0.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:4px">Usuario</div><div style="font-weight:600">${q.usuario}</div></div>
+      <div><div style="font-size:0.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:4px">Fecha</div><div>${q.fecha}</div></div>
+      <div><div style="font-size:0.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:4px">Ítems</div><div style="font-weight:700">${q.items} productos</div></div>
+      <div><div style="font-size:0.7rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;margin-bottom:4px">Estado</div><div>${badgeHTML(q.estado)}</div></div>
+    </div>
+    <div style="background:var(--orange-pale);border-radius:10px;padding:14px 16px;margin-bottom:12px">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--orange);text-transform:uppercase;margin-bottom:4px">Total cotización</div>
+      <div style="font-size:1.4rem;font-weight:800;color:var(--orange);font-family:var(--mono)">${formatCLP(q.total)}</div>
+    </div>
+    <div style="font-size:0.78rem;color:var(--gray-600)">Tiendas: <strong>${q.tiendas.join(', ')}</strong></div>`;
+
+  const approveBtn = document.getElementById('modal-quote-approve');
+  if (q.estado === 'pendiente') {
+    approveBtn.style.display = 'inline-flex';
+    approveBtn.onclick = () => { changeQuoteStatus(id, 'aprobada'); closeModal('modal-quote-view'); };
+  } else {
+    approveBtn.style.display = 'none';
+  }
+  openModal('modal-quote-view');
+}
+
+function changeQuoteStatus(id, newStatus) {
+  const q = AdminData.quotes.find(x => x.id === id);
+  if (q) {
+    q.estado = newStatus;
+    const label = newStatus === 'aprobada' ? 'aprobada ✓' : 'rechazada';
+    showToast(`Cotización ${id} ${label}`, newStatus === 'aprobada' ? 'success' : 'error');
+    addLog(newStatus === 'aprobada' ? 'success' : 'warning', `Cotización ${id} ${newStatus}`);
+    renderQuotes(
+      document.getElementById('quote-search').value,
+      document.getElementById('quote-filter-status').value
+    );
+  }
+}
+
+document.getElementById('quote-search').addEventListener('input', e =>
+  renderQuotes(e.target.value, document.getElementById('quote-filter-status').value));
+document.getElementById('quote-filter-status').addEventListener('change', e =>
+  renderQuotes(document.getElementById('quote-search').value, e.target.value));
+
+// ── Delete confirm ───────────────────────────────
+function confirmDelete(type, id, name) {
+  document.getElementById('confirm-title').textContent = `¿Eliminar "${name}"?`;
+  document.getElementById('confirm-msg').textContent = 'Esta acción no se puede deshacer.';
+  document.getElementById('btn-confirm-del').onclick = () => {
+    if (type === 'product') {
+      AdminData.products = AdminData.products.filter(p => p.id !== id);
+      renderProducts();
+      addLog('warning', `Producto eliminado: ${name}`);
+    }
+    if (type === 'user') {
+      AdminData.users = AdminData.users.filter(u => u.id !== id);
+      renderUsers();
+      addLog('warning', `Usuario eliminado: ${name}`);
+    }
+    showToast(`"${name}" eliminado`, 'warning');
+    closeModal('modal-confirm');
+  };
+  openModal('modal-confirm');
+}
+
+// ── Logs ─────────────────────────────────────────
+function addLog(tipo, accion) {
+  AdminData.logs.unshift({
+    id: Date.now(), tipo, accion,
+    fecha: new Date().toLocaleString('es-CL'),
+    usuario: session?.email || 'admin'
+  });
+  renderLogs();
+}
+
+function renderLogs() {
+  const iconMap = { info: 'ℹ', success: '✓', warning: '⚠', error: '✕' };
+  document.getElementById('log-list').innerHTML = AdminData.logs.map(l => `
+    <div class="log-item">
+      <div class="log-icon ${l.tipo}">${iconMap[l.tipo] || 'ℹ'}</div>
+      <div class="log-action">${l.accion}</div>
+      <div class="log-meta">${l.fecha}</div>
+    </div>`).join('') || '<div class="table-empty"><div class="table-empty-icon">📄</div><p>No hay actividad registrada</p></div>';
+}
+
+// ── Init ─────────────────────────────────────────
+async function init() {
+  await loadAllData();
+  renderDashboard();
+  renderProducts();
+  renderUsers();
+  renderQuotes();
+  renderLogs();
+  switchPage('dashboard');
+  addLog('info', `${session?.nombre || 'Admin'} inició sesión en el panel`);
+}
+
+init();
+</script>
+</body>
+</html>
